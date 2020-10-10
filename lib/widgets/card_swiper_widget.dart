@@ -3,10 +3,10 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movies_today/models/movie_model.dart';
 
 class CardSwiper extends StatelessWidget {
-  
   final List<Movie> movies;
+  final void Function(int) callback;
 
-  CardSwiper({@required this.movies});
+  CardSwiper({@required this.movies, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class CardSwiper extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, 'detalle',
-                      arguments: movies[index]),
+                  /* onTap: () => Navigator.pushNamed(context, 'detalle',
+                      arguments: movies[index]), */
                   child: FadeInImage(
                     image: NetworkImage(movies[index].getPosterImg()),
                     placeholder: AssetImage('assets/img/no-image.jpg'),
@@ -38,8 +38,13 @@ class CardSwiper extends StatelessWidget {
         },
         itemCount: movies.length,
         // pagination: new SwiperPagination(),
-        // control: new SwiperControl(),
+        //control: new SwiperControl(),
+        onIndexChanged: sendPageIndex,
       ),
     );
+  }
+
+  void sendPageIndex(int i) {
+    callback(i);
   }
 }
