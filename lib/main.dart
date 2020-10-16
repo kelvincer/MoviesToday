@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movies_today/pages/home_page.dart';
 import 'package:movies_today/pages/home_page_three.dart';
 import 'package:movies_today/pages/movie_detail.dart';
 

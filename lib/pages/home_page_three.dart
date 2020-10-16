@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_today/blocs/home_bloc.dart';
 import 'package:movies_today/blocs/home_bloc_provider.dart';
-import 'package:movies_today/models/movie_model.dart';
 import 'package:movies_today/repositories/movie_repository.dart';
 import 'package:movies_today/widgets/card_swiper_widget.dart';
 
@@ -11,12 +10,11 @@ class HomePageThree extends StatefulWidget {
 }
 
 class _HomePageThreeState extends State<HomePageThree> {
-  List<Movie> movies;
-  String movieTitle;
   HomeBloc homeMovieBloc;
 
   @override
   void initState() {
+    super.initState();
     final movieRepository = MovieRepository();
     homeMovieBloc = HomeBloc(movieRepository: movieRepository);
   }
@@ -30,11 +28,10 @@ class _HomePageThreeState extends State<HomePageThree> {
       body: HomeBlocProvider(
         homeBloc: homeMovieBloc,
         child: StreamBuilder(
-          stream: homeMovieBloc.movies,
+          stream: homeMovieBloc.data,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              movies = snapshot.data;
-              return _buildHome(movies);
+              return _buildHome();
             } else {
               return Center(
                 child: CircularProgressIndicator(),
@@ -46,6 +43,7 @@ class _HomePageThreeState extends State<HomePageThree> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            
             icon: Icon(Icons.home),
             label: 'Popular',
           ),
@@ -65,8 +63,7 @@ class _HomePageThreeState extends State<HomePageThree> {
     );
   }
 
-  Widget _buildHome(List<Movie> movies) {
-    movieTitle = movies[0].title;
+  Widget _buildHome() {
     return Container(
       color: Colors.red,
       child: Column(
@@ -95,7 +92,7 @@ class _HomePageThreeState extends State<HomePageThree> {
                       ),
                     );
                   }
-
+                
                   return Text('');
                 },
               ),
@@ -104,18 +101,12 @@ class _HomePageThreeState extends State<HomePageThree> {
           Expanded(
             child: Container(
               color: Colors.green,
-              child: Center(
-                child: CardSwiper(movies: movies, callback: setTitle),
-              ),
+              child: CardSwiper(bloc: homeMovieBloc),
             ),
           )
         ],
       ),
     );
-  }
-
-  void setTitle(int index) {
-    homeMovieBloc.setTitle(index);
   }
 
   @override
