@@ -3,30 +3,26 @@ import 'dart:convert';
 import 'package:movies_today/models/movie_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies_today/models/movie_popular_result.dart';
+import 'package:movies_today/utils/constants.dart';
 
 class MovieRepository {
-  String _apikey = '6435183fc8e829478cb5f8539efd1e71';
-  String _url = 'api.themoviedb.org';
-  String _language = 'es-ES';
   int _popularesPage = 0;
   bool _cargando = false;
   List<Movie> _populares = new List();
 
-  
   Future<List<Movie>> getMovies() {
     if (_cargando) return Future<List<Movie>>.value([]);
 
     _cargando = true;
     _popularesPage++;
 
-    final url = Uri.https(_url, '3/movie/popular', {
-      'api_key': _apikey,
-      'language': _language,
+    final urlPath = Uri.https(url, '3/movie/popular', {
+      'api_key': apikey,
+      'language': language,
       'page': _popularesPage.toString()
     });
 
-    final resp = _requestPopularMovies(url);
-
+    final resp = _requestPopularMovies(urlPath);
     _cargando = false;
     return resp;
   }

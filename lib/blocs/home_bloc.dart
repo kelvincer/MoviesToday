@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:movies_today/models/movie_model.dart';
-import 'package:movies_today/repositories/movie_repository.dart';
+import 'package:movies_today/repositories/home_repository.dart';
 import 'package:rxdart/subjects.dart';
 
 class HomeBloc {
@@ -47,5 +47,14 @@ class HomeBloc {
 
   void setTitle(int index) {
     addTitle.add(moviesData[index].title);
+  }
+
+  void getMoviesTwo() {
+    final movies = movieRepository.getMovies();
+    movies.then((value) {
+      moviesData = value;
+      addMovies.add(value);
+      print('new movies');
+    });
   }
 }

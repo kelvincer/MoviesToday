@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_today/blocs/home_bloc.dart';
 import 'package:movies_today/blocs/home_bloc_provider.dart';
 import 'package:movies_today/models/movie_model.dart';
-import 'package:movies_today/repositories/movie_repository.dart';
+import 'package:movies_today/repositories/home_repository.dart';
 
 class HomePageMovie extends StatefulWidget {
   @override

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movies_today/blocs/home_bloc.dart';
 import 'package:movies_today/blocs/home_bloc_provider.dart';
+import 'package:movies_today/models/movie_model.dart';
 import 'package:movies_today/repositories/home_repository.dart';
 import 'package:movies_today/widgets/card_swiper_widget.dart';
 
-class HomePageThree extends StatefulWidget {
+class HomePageFour extends StatefulWidget {
   @override
-  _HomePageThreeState createState() => _HomePageThreeState();
+  _HomePageFourState createState() => _HomePageFourState();
 }
 
-class _HomePageThreeState extends State<HomePageThree> {
+class _HomePageFourState extends State<HomePageFour> {
   HomeBloc homeMovieBloc;
 
   @override
@@ -28,10 +29,11 @@ class _HomePageThreeState extends State<HomePageThree> {
       body: HomeBlocProvider(
         homeBloc: homeMovieBloc,
         child: StreamBuilder(
-          stream: homeMovieBloc.data,
+          stream: homeMovieBloc.movies,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildHome();
+              List<Movie> movies = snapshot.data;
+              return _buildHome(movies);
             } else {
               return Center(
                 child: CircularProgressIndicator(),
@@ -43,7 +45,6 @@ class _HomePageThreeState extends State<HomePageThree> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            
             icon: Icon(Icons.home),
             label: 'Popular',
           ),
@@ -63,45 +64,15 @@ class _HomePageThreeState extends State<HomePageThree> {
     );
   }
 
-  Widget _buildHome() {
+  Widget _buildHome(List<Movie> movies) {
     return Container(
       color: Colors.red,
       child: Column(
         children: [
-          //SizedBox(height: 20.0),
-          Container(
-            height: 60.0,
-            child: HomeBlocProvider(
-              homeBloc: homeMovieBloc,
-              child: StreamBuilder(
-                stream: homeMovieBloc.title,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final title = snapshot.data;
-                    return Center(
-                      child: Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Open Sans',
-                            fontSize: 20),
-                      ),
-                    );
-                  }
-                
-                  return Text('');
-                },
-              ),
-            ),
-          ),
           Expanded(
             child: Container(
               color: Colors.green,
-              child: CardSwiper(bloc: homeMovieBloc),
+              child: CardSwiper(bloc: homeMovieBloc, movies: movies)
             ),
           )
         ],
