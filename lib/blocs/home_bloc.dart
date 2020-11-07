@@ -8,7 +8,7 @@ class HomeBloc {
   final MovieRepository movieRepository;
 
   final StreamController<List<Movie>> moviesController =
-      StreamController<List<Movie>>();
+      BehaviorSubject(); //StreamController<List<Movie>>();
   Sink<List<Movie>> get addMovies => moviesController.sink;
   Stream<List<Movie>> get movies => moviesController.stream;
 

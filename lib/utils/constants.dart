@@ -5,7 +5,7 @@ const String url = 'api.themoviedb.org';
 const String language = 'de-DE';
 
 launchURL(String videoId) async {
-  String url = "https://www.youtube.com/watch?v={$videoId}";
+  String url = "https://www.youtube.com/watch?v=$videoId";
   if (await canLaunch(url)) {
     await launch(url);
   } else {
