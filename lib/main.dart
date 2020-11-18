@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_today/pages/detail_page.dart';
 import 'package:movies_today/pages/home_page_four.dart';
-import 'package:movies_today/pages/home_page_three.dart';
 import 'package:movies_today/provider/page_notifier.dart';
 import 'package:provider/provider.dart';
 

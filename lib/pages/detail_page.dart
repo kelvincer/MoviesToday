@@ -31,7 +31,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     detailBloc.getMovieCredit(movie.id);
     detailBloc.getMovieSimilar(movie.id);
     return Scaffold(
-      //appBar: AppBar(title: Text("Peli"),),
       body: StreamBuilder(
           stream: CombineLatestStream.list([
             detailBloc.detail,
@@ -41,14 +40,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           ]),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Column(
-                children: <Widget>[
-                  _crearImagen(context, movie),
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+              return CustomScrollView(
+                slivers: <Widget>[
+                  _crearAppbar(movie),
+                  SliverFillRemaining(
+                    //hasScrollBody: false,
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
                   )
                 ],
@@ -63,7 +61,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             print(data1);
             print(data2);
 
-            return SingleChildScrollView(
+            /* return SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   _crearImagen(context, movie),
@@ -77,7 +75,22 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   ),
                 ],
               ),
-            );
+            ); */
+            return CustomScrollView(slivers: <Widget>[
+              _crearAppbar(movie),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  _firstSection(data1),
+                  _secondSection(movie),
+                  _thirdSection(data2),
+                  _fourSection(data3),
+                  RaisedButton(
+                    onPressed: () => launchURL("videoId"),
+                    child: Text('Show Flutter homepage'),
+                  ),
+                ]),
+              )
+            ]);
           }),
     );
   }
@@ -88,7 +101,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       child: Container(
         width: double.infinity,
         child: GestureDetector(
-          //onTap: ()=> Navigator.pushNamed(context, 'scroll'),
           child: Image(
             image: NetworkImage(movie.getPosterImg()),
             height: 250.0,
@@ -254,6 +266,48 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _crearAppbar(Movie movie) {
+    return SliverAppBar(
+      elevation: 2.0,
+      backgroundColor: Colors.indigoAccent,
+      expandedHeight: 240.0,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Opacity(
+          opacity: 0.75,
+          child: Container(
+            color: Colors.grey[400],
+            margin: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              movie.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15.0,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ),
+        background: Hero(
+          tag: movie.uniqueId,
+          child: FadeInImage(
+            image: NetworkImage(movie.getPosterImg()),
+            placeholder: AssetImage('assets/img/loading.gif'),
+            fadeInDuration: Duration(milliseconds: 150),
+            fit: BoxFit.fitWidth,
+            height: 250.0,
+          ),
+        ),
       ),
     );
   }
