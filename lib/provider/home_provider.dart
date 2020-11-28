@@ -4,13 +4,13 @@ import 'package:movies_today/repositories/popular_repository.dart';
 import 'package:movies_today/repositories/home_repository.dart';
 import 'package:movies_today/repositories/upcoming_repository.dart';
 
-class GenericHomeProvider<P extends HomeRepository> extends ChangeNotifier {
+class HomeProvider<P extends HomeRepository> extends ChangeNotifier {
   P repository;
   String _title = "";
   String get title => _title;
   List<Movie> populares = [];
 
-  GenericHomeProvider({this.repository});
+  HomeProvider({this.repository});
 
   void getMovies() {
     var resp = repository.getMovies();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_today/pages/detail_page.dart';
+import 'package:movies_today/pages/detail_page_two.dart';
 import 'package:movies_today/pages/home_page_four.dart';
 import 'package:movies_today/provider/page_notifier.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +17,13 @@ class MyApp extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (_) => NavegationModel())],
       child: MaterialApp(
         title: 'Peliculas',
+        theme: ThemeData(
+          primaryColor: Colors.orange[800],
+        ),
         initialRoute: '/',
         routes: {
           '/': (BuildContext context) => HomePageFour(),
-          'detalle': (BuildContext context) => MovieDetailPage(),
+          'detalle': (BuildContext context) => DetailPage(),
         },
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movies_today/models/movie_model.dart';
-import 'package:movies_today/provider/generic_provider.dart';
+import 'package:movies_today/provider/home_provider.dart';
 
 class CardSwiper extends StatelessWidget {
-  final GenericHomeProvider provider;
+  final HomeProvider provider;
 
   CardSwiper({this.provider});
 

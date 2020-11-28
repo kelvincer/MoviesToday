@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_today/provider/generic_provider.dart';
+import 'package:movies_today/provider/home_provider.dart';
 import 'package:movies_today/repositories/upcoming_repository.dart';
 import 'package:movies_today/widgets/card_swiper_widget_two.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class _UpcomingMoviePageState extends State<UpcomingMoviePage>
   /* UpcomingProvider upcomingProvider =
       UpcomingProvider(upcomingRepository: UpcomingRepository()); */
 
-  GenericHomeProvider provider = GenericHomeProvider<UpcomingRepository>(
+  HomeProvider provider = HomeProvider<UpcomingRepository>(
       repository: UpcomingRepository());
 
   @override
@@ -28,7 +28,7 @@ class _UpcomingMoviePageState extends State<UpcomingMoviePage>
     super.build(context);
     return ChangeNotifierProvider.value(
       value: provider,
-      child: Consumer<GenericHomeProvider>(
+      child: Consumer<HomeProvider>(
         builder: (context, model, child) {
           if (model.populares.isEmpty) {
             return Center(

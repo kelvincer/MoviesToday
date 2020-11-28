@@ -270,21 +270,23 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  Widget _crearAppbar(Movie movie) {
+  /* Widget _crearAppbar(Movie movie) {
     return SliverAppBar(
       elevation: 2.0,
       backgroundColor: Colors.indigoAccent,
       expandedHeight: 240.0,
-      floating: false,
-      pinned: true,
+      //floating: true,
+      //pinned: true,
+      title: Text("Kelvin"),
       flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.all(2.0),
         centerTitle: true,
         title: Opacity(
           opacity: 0.75,
           child: Container(
-            color: Colors.grey[400],
-            margin: EdgeInsets.symmetric(horizontal: 10.0),
-            padding: EdgeInsets.all(5.0),
+            color: Colors.grey[600],
+            //margin: EdgeInsets.symmetric(horizontal: 10.0),
+            //padding: EdgeInsets.all(5.0),
             child: Text(
               movie.title,
               overflow: TextOverflow.ellipsis,
@@ -292,8 +294,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w800,
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
@@ -306,6 +308,38 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             fadeInDuration: Duration(milliseconds: 150),
             fit: BoxFit.fitWidth,
             height: 250.0,
+          ),
+        ),
+      ),
+    );
+  } */
+
+  Widget _crearAppbar(Movie movie) {
+    return SliverAppBar(
+      elevation: 2.0,
+      expandedHeight: 240.0,
+      floating: true,
+      pinned: true,
+      title: Text(
+        movie.title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.all(2.0),
+        background: Hero(
+          tag: movie.uniqueId,
+          child: FadeInImage(
+            image: NetworkImage(movie.getPosterImg()),
+            placeholder: AssetImage('assets/img/loading.gif'),
+            fadeInDuration: Duration(milliseconds: 150),
+            fit: BoxFit.fitWidth,
+            height: 240.0,
           ),
         ),
       ),
