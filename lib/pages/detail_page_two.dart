@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_today/models/detail/movie_credit.dart';
+import 'package:movies_today/models/detail/movie_detail.dart';
 import 'package:movies_today/models/detail/movie_similar.dart';
 import 'package:movies_today/models/detail/movie_video.dart';
 import 'package:movies_today/models/movie_model.dart';
@@ -10,6 +12,7 @@ import 'package:movies_today/utils/constants.dart';
 import 'package:movies_today/utils/text_util.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:social_share/social_share.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key}) : super(key: key);
@@ -61,7 +64,8 @@ class _DetailPageState extends State<DetailPage> {
                 _crearAppbar(movie),
                 SliverList(
                   delegate: SliverChildListDelegate([
-                    _firstSection(value.movieVideoModel),
+                    _firstSection(
+                        value.movieVideoModel, value.movieDetailModel, movie),
                     _secondSection(movie),
                     _thirdSection(value.movieCreditModel),
                     _fourSection(value.movieSimilarModel),
@@ -92,13 +96,19 @@ class _DetailPageState extends State<DetailPage> {
       flexibleSpace: FlexibleSpaceBar(
         background: Hero(
           tag: movie.uniqueId,
-          child: FadeInImage(
+          child: CachedNetworkImage(
+            imageUrl: movie.getPosterImg(),
+            height: 240.0,
+            fit: BoxFit.cover,
+          ),
+
+          /* child: FadeInImage(
             image: NetworkImage(movie.getPosterImg()),
             placeholder: AssetImage('assets/img/loading.gif'),
             fadeInDuration: Duration(milliseconds: 150),
             fit: BoxFit.cover,
             height: 240.0,
-          ),
+          ), */
         ),
       ),
     );
@@ -133,9 +143,10 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _firstSection(MovieVideoModel model) {
+  Widget _firstSection(
+      MovieVideoModel model, MovieDetailModel detailModel, Movie movie) {
     return Container(
-      color: Colors.grey,
+      color: Colors.green,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -148,27 +159,45 @@ class _DetailPageState extends State<DetailPage> {
                     print("video: ${model.results[0].key}");
                     launchURL(model.results[0].key);
                   },
-                  child: _accion(Icons.movie, "Video")),
+                  child: _action(Icons.movie_outlined, "Video")),
             ),
-          _accion(Icons.thumb_up, "Vote"),
-          _accion(Icons.star, "Star")
+          Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                customBorder: CircleBorder(),
+                onTap: () {},
+                child: _action(
+                    Icons.thumb_up_outlined, detailModel.voteCount.toString()),
+              )),
+          Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                  customBorder: CircleBorder(),
+                  onTap: () {
+                    findPath(movie.posterPath).then((value) =>
+                        SocialShare.shareOptions("Hello world",
+                            imagePath: value));
+                  },
+                  child: _action(Icons.share_outlined, "Share")))
         ],
       ),
     );
   }
 
-  Widget _accion(IconData icon, String texto) {
+  Widget _action(IconData icon, String texto) {
     return Container(
       padding: EdgeInsets.all(10.0),
-      child: Column(
-        children: <Widget>[
-          Icon(icon, size: 30.0),
-          SizedBox(height: 5.0),
-          Text(
-            texto,
-            style: TextStyle(fontSize: 15.0, color: Colors.blue),
-          )
-        ],
+      child: InkWell(
+        child: Column(
+          children: <Widget>[
+            Icon(icon, size: 30.0),
+            SizedBox(height: 5.0),
+            Text(
+              texto,
+              style: TextStyle(fontSize: 15.0, color: Colors.black),
+            )
+          ],
+        ),
       ),
     );
   }
